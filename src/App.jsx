@@ -1,6 +1,25 @@
 import { useState } from 'react'
 
 function App() {
+  const [pokemon, setPokemon] = useState([]);
+  const [clickedPokemon, setClickedPokemon] = useState([]);
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
+  const fetchPokemon = async() => {
+    const pokemonList = [];
+    for(let i = 1; i <= 12; i++){
+      const response = await fetch(`https://pokeapi.co/api/v2/${i}`);
+      const data = await response.json();
+      pokemonList.push({
+        id : data.id,
+        name : data.name,
+        image: data.sprites.front_default,
+      })
+    }
+
+  }
+
 
   return (
     <>
