@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function App() {
   const [pokemon, setPokemon] = useState([]);
@@ -17,9 +17,41 @@ function App() {
         image: data.sprites.front_default,
       })
     }
+    setPokemon(pokemonList);
 
   }
 
+  useEffect(() => {
+    fetchPokemon()
+  },[])
+
+  const shuffleArray = (array) =>{
+    return [...array].sort(() => Math.random() - 0.5);
+
+  }
+
+
+  const handleClick = (id) => {
+    if(clickedPokemon.includes(id)){
+      setClickedPokemon([]);
+      setScore(0);
+      alert("Game Over");
+    }else{
+      setClickedPokemon([...clickedPokemon, id]);
+      setScore(score + 1);
+      setBestScore(Math.max(bestScore, score + 1))
+
+       if(score + 1 === 12){
+       alert("You've Won!");
+       setClickedPokemon([]);
+       setScore(0);
+    }
+    }
+
+    setPokemon(shuffleArray(pokemon));
+
+   
+  }
 
   return (
     <>
@@ -32,6 +64,15 @@ function App() {
           </div>
          </div>
          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-4 w-full max-w-3xl">
+          {
+            pokemon.map((p) =>{
+              <div className="bg-white rounded-lg shadow-lg p-2 sm:p-4 cursor-pointer transform hover:scale-105 transition-transform" key={p.id}>
+                <img src={p.image} alt="" />
+                <p>{p.name}</p>
+              </div>
+              
+            })
+          }
 
          </div>
      </div>
